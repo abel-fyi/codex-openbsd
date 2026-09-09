@@ -1,0 +1,20 @@
+# Generated packages and build trees
+package/*.tgz
+.work/
+distfiles/
+pobj/
+packages/
+
+# Machine-specific logs and crash dumps
+logs/
+*.log
+*.core
+
+# Credentials and Codex state
+auth.json
+.codex/
+
+# Editor and OS files
+*.swp
+*~
+.DS_Store
