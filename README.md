@@ -69,19 +69,23 @@ adds the stack-start and reserved-limit implementations using
 `pthread_stackseg_np()` from `<pthread_np.h>`. Without it, V8 failed to link on
 OpenBSD.
 
-The V8 build can run for hours. The resulting release package is kept locally
-at `package/codex-0.164.0.tgz`; the large archive is ignored by Git, and its
-SHA256 is recorded in `package/SHA256`. Install or replace the package with:
+The V8 build can run for hours. The signed release package is kept locally at
+`package/codex-0.164.0.tgz`; the large archive is ignored by Git, and its
+SHA256 is recorded in `package/SHA256`. The package is signed with the
+repository's `codex-openbsd-pkg` key. Its public key is in
+`package/codex-openbsd-pkg.pub` and should be installed in `/etc/signify` on
+machines that should verify the package. Then install or replace it with:
 
 ```sh
-./install.sh package/codex-0.164.0.tgz
+doas install -m 0644 package/codex-openbsd-pkg.pub /etc/signify/
+doas pkg_add -r package/codex-0.164.0.tgz
 pkg_info -e codex-0.164.0
 /usr/local/bin/codex --version
 ```
 
-`install.sh` uses `doas pkg_add -D unsigned -r` for this local package: `-r`
-replaces an older installed Codex version, and `-D unsigned` allows the
-locally-built package, which is not signed by OpenBSD's package keys.
+The `install.sh` convenience script uses `pkg_add -D unsigned`, which bypasses
+signature trust checks. Use the commands above when you want OpenBSD to verify
+the package signature.
 
 Then launch Codex from the directory you want it to work in with `codex`.
 
