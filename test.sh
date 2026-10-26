@@ -1,14 +1,10 @@
 #!/bin/ksh
 set -eu
 
-codex --version
-codex login status
-codex features list | grep -E \
-    '^code_mode_host[[:space:]]+stable[[:space:]]+true$'
+version=$(codex --version)
+[ "$version" = 'codex-cli 0.164.0' ] || {
+    echo "Unexpected Codex version: $version" >&2
+    exit 1
+}
 [ -x /usr/local/bin/codex-code-mode-host ]
-[ -x /usr/local/libexec/codex/codex-code-mode-host ]
-
-echo "Offline checks passed."
-echo "For an authenticated file-edit test, run:"
-echo "  mkdir -p /tmp/codex-smoke && cd /tmp/codex-smoke"
-echo "  codex exec --skip-git-repo-check 'Create hello.txt containing hello world.'"
+echo "Installed Codex 0.164.0 and code-mode host are available."

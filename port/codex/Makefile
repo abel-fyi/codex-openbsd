@@ -12,7 +12,7 @@ DPB_PROPERTIES =	parallel
 
 USE_WXNEEDED =		Yes
 
-V =			0.153.4
+V =			0.164.0
 GH_ACCOUNT =		openai
 GH_PROJECT =		codex
 GH_TAGNAME =		rust-v${V}
@@ -21,12 +21,14 @@ PKGNAME =		codex-${V}
 # only build the Rust workspace (the repo also contains JS tooling).
 WRKSRC =		${WRKDIST}/codex-rs
 
-DIST_TUPLE += github nornagon crossterm 45fecb9508105988f42fe6ff0441783ed3717f92 ./crossterm
+DIST_TUPLE += github openai-oss-forks crossterm ed1cdab335221515706178d68495bba2aed1924f ./crossterm
 DIST_TUPLE += github openai-oss-forks tokio-tungstenite 0e5b2d73aa18dd9f0a50ee9ff199d5aef7594186 ./tokio-tungstenite
 DIST_TUPLE += github openai-oss-forks tungstenite-rs 4fffad30fe373adbdcffab9545e9e9bf4f2fc19f ./tungstenite
 DIST_TUPLE += github helix-editor nucleo 4253de9faabb4e5c6d81d946a5e35a90f87347ee ./nucleo
+DIST_TUPLE += github modelcontextprotocol rust-sdk 98a54789b80110ad210495c4ad845c89e1980471 ./rmcp
 DIST_TUPLE += github dzbarsky rules_rust b56cbaa8465e74127f1ea216f813cd377295ad81 ./runfiles
-DIST_TUPLE += github microsoft mxc 6cd3d58f05d3447e67109cfb75e042803b843ca4 ./mxc
+DIST_TUPLE += github microsoft mxc b21120168d70befe12356411423266bfef168446 ./mxc
+DIST_TUPLE += github hyperium h3 e07e69412876f7e26f026bd75a48b2704d8c8283 ./h3
 
 MAINTAINER =		Kirill A. Korinsky <kirill@korins.ky>
 
@@ -50,7 +52,8 @@ BUILD_DEPENDS =		devel/cmake/core \
 LIB_DEPENDS =		textproc/oniguruma \
 			x11/dbus
 
-RUN_DEPENDS =		python->=3.13:lang/python/3 \
+RUN_DEPENDS =		devel/git \
+			lang/python/3 \
 			textproc/ripgrep
 
 MODULES =		devel/cargo
@@ -69,7 +72,7 @@ MODCARGO_CRATES_KEEP +=	libsqlite3-sys
 MODCARGO_CRATES_KEEP +=	zstd-sys
 
 MODCARGO_ENV +=		V8_FROM_SOURCE=1 \
-			GN=${.CURDIR}/../../tools/gn-openbsd-amd64 \
+			GN=${LOCALBASE}/bin/gn \
 			NINJA=${LOCALBASE}/bin/ninja \
 			GN_ARGS="clang_use_chrome_plugins=false \
 			extra_cppflags=\"-idirafter ${LOCALBASE}/include -idirafter ${X11BASE}/include\" \
@@ -85,6 +88,7 @@ MODCARGO_ENV +=		V8_FROM_SOURCE=1 \
 
 # Makes the build look more alive while compiling v8
 MODCARGO_BUILD_ARGS +=	-vv
+MODCARGO_BUILD_ARGS +=	--jobs=2
 
 MODCARGO_INSTALL_TARGET_PATHS = cli code-mode-host
 
@@ -98,8 +102,8 @@ MAKE_ENV =		${MODCARGO_ENV}
 # test suite expects network access and a configured OpenAI account
 NO_TEST =		Yes
 
-DENO_CORE_ICUDATA_V =	0.77.0
-V8_CARGO_V =		150.4.0
+DENO_CORE_ICUDATA_V =	0.78.0
+V8_CARGO_V =		152.2.0
 
 V8_DISTDIR =		${MODCARGO_VENDOR_DIR}/v8-${V8_CARGO_V}
 
