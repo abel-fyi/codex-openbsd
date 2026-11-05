@@ -1,0 +1,10 @@
+CODEX ON OPENBSD
+
+Run Codex from the directory you want it to work in:
+
+  codex
+
+The code-mode host is included and starts when Codex needs it.
+It is installed at /usr/local/bin/codex-code-mode-host.
+
+Large projects may need higher memory and open-file limits.
